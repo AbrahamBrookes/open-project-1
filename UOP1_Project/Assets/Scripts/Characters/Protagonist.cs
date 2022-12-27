@@ -13,7 +13,6 @@ public class Protagonist : MonoBehaviour
 	private float _previousSpeed;
 
 	//These fields are read and manipulated by the StateMachine actions
-	[NonSerialized] public bool jumpInput;
 	[NonSerialized] public bool extraActionInput;
 	[NonSerialized] public bool attackInput;
 	[NonSerialized] public Vector3 movementInput; //Initial input coming from the Protagonist script
@@ -23,7 +22,6 @@ public class Protagonist : MonoBehaviour
 
 	public const float GRAVITY_MULTIPLIER = 5f;
 	public const float MAX_FALL_SPEED = -50f;
-	public const float MAX_RISE_SPEED = 100f;
 	public const float GRAVITY_COMEBACK_MULTIPLIER = .03f;
 	public const float GRAVITY_DIVIDER = .6f;
 	public const float AIR_RESISTANCE = 5f;
@@ -36,8 +34,6 @@ public class Protagonist : MonoBehaviour
 	//Adds listeners for events being triggered in the InputReader script
 	private void OnEnable()
 	{
-		_inputReader.JumpEvent += OnJumpInitiated;
-		_inputReader.JumpCanceledEvent += OnJumpCanceled;
 		_inputReader.MoveEvent += OnMove;
 		_inputReader.StartedRunning += OnStartedRunning;
 		_inputReader.StoppedRunning += OnStoppedRunning;
@@ -48,8 +44,6 @@ public class Protagonist : MonoBehaviour
 	//Removes all listeners to the events coming from the InputReader script
 	private void OnDisable()
 	{
-		_inputReader.JumpEvent -= OnJumpInitiated;
-		_inputReader.JumpCanceledEvent -= OnJumpCanceled;
 		_inputReader.MoveEvent -= OnMove;
 		_inputReader.StartedRunning -= OnStartedRunning;
 		_inputReader.StoppedRunning -= OnStoppedRunning;
@@ -115,16 +109,6 @@ public class Protagonist : MonoBehaviour
 	{
 
 		_inputVector = movement;
-	}
-
-	private void OnJumpInitiated()
-	{
-		jumpInput = true;
-	}
-
-	private void OnJumpCanceled()
-	{
-		jumpInput = false;
 	}
 
 	private void OnStoppedRunning() => isRunning = false;
